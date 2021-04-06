@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlightManager.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace FlightManager
 {
@@ -24,6 +26,7 @@ namespace FlightManager
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+            services.AddDbContext<FlightsManagerDBContext>(dbContOp => dbContOp.UseSqlServer(Configuration.GetConnectionString("FlightManagerConStr")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

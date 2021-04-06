@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj": {}
+    "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj": {}
   },
   "projects": {
-    "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj": {
+    "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj",
+        "projectUniqueName": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj",
         "projectName": "FlightManager",
-        "projectPath": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj",
+        "projectPath": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager\\FlightManager.csproj",
         "packagesPath": "C:\\Users\\E_V\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\obj\\",
+        "outputPath": "C:\\Users\\E_V\\FlightManager\\FlightManager\\FlightManager\\FlightManager\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -42,6 +42,28 @@
       "frameworks": {
         "netcoreapp3.1": {
           "targetAlias": "netcoreapp3.1",
+          "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[5.0.4, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[3.1.5, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",

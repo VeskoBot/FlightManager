@@ -6,13 +6,18 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using FlightManager.Data;
 
 namespace FlightManager.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
+        private FlightsManagerDBContext _ctx;
+        public HomeController(FlightsManagerDBContext ctx)
+        {
+            _ctx = ctx;
+        }
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
@@ -23,7 +28,11 @@ namespace FlightManager.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult Login()
+        {
+            return View();
+        }
+        public IActionResult Registration()
         {
             return View();
         }
