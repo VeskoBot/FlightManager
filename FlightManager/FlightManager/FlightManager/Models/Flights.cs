@@ -18,14 +18,14 @@ namespace FlightManager.Models
         public string DepartureLoaction { get; set; }
         [Required]
         [Column(TypeName = "nvarchar(30)")]
-        [Display(Name = "Place of Arrival")]
+        [Display(Name = "Place of arrival")]
         public string ArrivalLocation { get; set; }
         [Required]
-        [Column(TypeName = "date")]
+        [Column(TypeName = "datetime")]
         [Display(Name = "Time of Departure")]
         public DateTime DepartureTime { get; set; }
         [Required]
-        [Column(TypeName = "date")]
+        [Column(TypeName = "datetime")]
         [Display(Name = "Time of Arrival")]
         public DateTime ArrivalTime { get; set; }
         [Required]
@@ -37,7 +37,7 @@ namespace FlightManager.Models
         [Display(Name = "Unique plane number")]
         public string AirplaneCode { get; set; }
         [Required]
-        [Display(Name = "Total amount of vacant seats")]
+        [Display(Name = "Vacant seats in economy")]
         public int VacantSpots { get; set; }
         [Required]
         [Display(Name = "Vacant seats in bussiness class")]

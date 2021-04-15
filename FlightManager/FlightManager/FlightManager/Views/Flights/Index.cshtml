@@ -1,0 +1,75 @@
+﻿@model IEnumerable<FlightManager.Models.Flights>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartureLoaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivalLocation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DepartureTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ArrivalTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AirplaneType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AirplaneCode)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VacantSpots)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.VacantSpotsBussiness)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureLoaction)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalLocation)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalTime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AirplaneType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AirplaneCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VacantSpots)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.VacantSpotsBussiness)
+            </td>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.FlightId">More</a> |
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

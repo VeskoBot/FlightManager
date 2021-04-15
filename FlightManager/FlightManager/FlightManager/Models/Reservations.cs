@@ -41,5 +41,7 @@ namespace FlightManager.Models
         [Display(Name = "Ticket Type")]
         public int TicketType { get; set; }
         public Flights Flight { get; set; }
+        [Required]
+        public int FlightId { get; set; }
     }
 }

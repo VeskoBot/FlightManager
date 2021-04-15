@@ -16,8 +16,12 @@ namespace FlightManager.Models
         [Display(Name = "Username")]
         public string Username { get; set; }
         [Required]
-        [Column(TypeName = "nvarchar(32)")]
+        [Column(TypeName = "nvarchar(100)")]
         public string Password { get; set; }
+        [Column(TypeName = "nvarchar(100)")]
+        [NotMapped]
+        [Display(Name = "Confirm password")]
+        public string ConfirmPassword { get; set; }
         [EmailAddress]
         [Required]
         [Column(TypeName = "nvarchar(50)")]

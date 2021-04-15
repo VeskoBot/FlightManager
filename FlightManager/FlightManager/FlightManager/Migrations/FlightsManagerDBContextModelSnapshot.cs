@@ -16,7 +16,7 @@ namespace FlightManager.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
+                .HasAnnotation("ProductVersion", "5.0.5")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("FlightManager.Models.Flights", b =>
@@ -39,14 +39,14 @@ namespace FlightManager.Migrations
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("ArrivalTime")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<string>("DepartureLoaction")
                         .IsRequired()
                         .HasColumnType("nvarchar(30)");
 
                     b.Property<DateTime>("DepartureTime")
-                        .HasColumnType("date");
+                        .HasColumnType("datetime");
 
                     b.Property<int>("VacantSpots")
                         .HasColumnType("int");
@@ -74,7 +74,7 @@ namespace FlightManager.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int?>("FlightId")
+                    b.Property<int>("FlightId")
                         .HasColumnType("int");
 
                     b.Property<string>("LastName")
@@ -132,7 +132,7 @@ namespace FlightManager.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(32)");
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("PhoneNumber")
                         .IsRequired()
@@ -154,7 +154,10 @@ namespace FlightManager.Migrations
                 {
                     b.HasOne("FlightManager.Models.Flights", "Flight")
                         .WithMany("ReservationsList")
-                        .HasForeignKey("FlightId");
+                        .HasForeignKey("FlightId")
+                        .HasConstraintName("ForeignKey_Flights_Reservations")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Flight");
                 });

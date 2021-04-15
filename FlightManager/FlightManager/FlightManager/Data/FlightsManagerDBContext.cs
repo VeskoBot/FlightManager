@@ -20,7 +20,9 @@ namespace FlightManager.Data
         {
             modelBuilder.Entity<Reservations>()
                 .HasOne(p => p.Flight)
-                .WithMany(b => b.ReservationsList);
+                .WithMany(b => b.ReservationsList)
+                .HasForeignKey(p => p.FlightId)
+                .HasConstraintName("ForeignKey_Flights_Reservations");
         }
     }
 }
