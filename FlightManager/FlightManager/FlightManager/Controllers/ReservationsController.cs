@@ -75,7 +75,14 @@ namespace FlightManager.Controllers
                     {
                         return NotFound();
                     }
-
+                    if (reservations.TicketType == 1)
+                    {
+                        ViewData["Ticket"] = "Bussiness";
+                    }
+                    else if (reservations.TicketType == 0)
+                    {
+                        ViewData["Ticket"] = "Economy";
+                    }
                     return View(reservations);
                 }
                 else
@@ -107,7 +114,14 @@ namespace FlightManager.Controllers
                     {
                         return NotFound();
                     }
-
+                    if (reservations.TicketType == 1)
+                    {
+                        ViewData["Ticket"] = "Bussiness";
+                    }
+                    else if (reservations.TicketType == 0)
+                    {
+                        ViewData["Ticket"] = "Economy";
+                    }
                     return View(reservations);
                 }
                 else
@@ -263,7 +277,14 @@ namespace FlightManager.Controllers
                 {
                     return NotFound();
                 }
-
+                if (reservations.TicketType == 1)
+                {
+                    ViewData["Ticket"] = "Bussiness";
+                }
+                else if (reservations.TicketType == 0)
+                {
+                    ViewData["Ticket"] = "Economy";
+                }
                 return View(reservations);
             }
             else

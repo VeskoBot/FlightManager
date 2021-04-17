@@ -353,3 +353,4 @@ C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\n
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\_LayoutUser.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\DetailsAdmin.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\IndexAdmin.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Flights\FlightReservations.cshtml.g.cs

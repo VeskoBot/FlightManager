@@ -292,6 +292,20 @@ namespace FlightManager.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
+        public async Task<IActionResult> FlightReservations(int? id)
+        {
+            ViewData["Layout"] = GetLayout();
+            var currentReservations = await _context.ReservationsSet.ToListAsync();
+            List <Reservations> flightReservations= new List<Reservations>();
+            for (int i = 0; i< currentReservations.Count(); i++)
+            {
+                if (currentReservations[i].FlightId == id)
+                {
+                    flightReservations.Add(currentReservations[i]);
+                }
+            }
+            return View(flightReservations);
+        }
         public string GetLayout()
         {
             byte[] buffer = new byte[200];

@@ -87,7 +87,14 @@ namespace FlightManager.Controllers
                 {
                     return NotFound();
                 }
-
+                if (user.Role == 1)
+                {
+                    ViewData["Role"] = "Admin";
+                }
+                else if(user.Role == 0)
+                {
+                    ViewData["Role"] = "User";
+                }
                 return View(user);
             }
             else
@@ -228,7 +235,14 @@ namespace FlightManager.Controllers
                 {
                     return NotFound();
                 }
-
+                if (user.Role == 1)
+                {
+                    ViewData["Role"] = "Admin";
+                }
+                else if (user.Role == 0)
+                {
+                    ViewData["Role"] = "User";
+                }
                 return View(user);
             }
             else
