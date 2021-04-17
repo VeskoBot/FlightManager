@@ -9,6 +9,7 @@ using FlightManager.Data;
 using FlightManager.Models;
 using FlightManager.Utilities;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace FlightManager.Controllers
 {
@@ -23,12 +24,22 @@ namespace FlightManager.Controllers
         public  IActionResult Login()
         {
             ViewData["result"] = "";
-            return View();
+            ViewData["Layout"] = GetLayout();
+            byte[] buffer = new byte[200];
+            if (!HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index","Flights");
+            }
         }
         [HttpPost]
         public async Task<IActionResult> Login(string username,string pass)
         {
-            if(username == null || pass == null)
+            ViewData["Layout"] = GetLayout();
+            if (username == null || pass == null)
             {
                 ViewData["result"] = "Enter a username and a password!";
                 return View();
@@ -43,36 +54,61 @@ namespace FlightManager.Controllers
             }
             HttpContext.Session.Set("username",Encoding.UTF8.GetBytes(user.Username));
             HttpContext.Session.Set("role", Encoding.UTF8.GetBytes(user.Role.ToString()));
-            return RedirectToAction("Index","Users");
+            return RedirectToAction("Index","Flights");
         }
         // GET: Users
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UsersSet.ToListAsync());
+            if (HttpContext.Session.GetString("role")=="1")
+            {
+                ViewData["Layout"] = GetLayout();
+                return View(await _context.UsersSet.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("Login","Users");
+            }
         }
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                ViewData["Layout"] = GetLayout();
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var user = await _context.UsersSet
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+                var user = await _context.UsersSet
+                    .FirstOrDefaultAsync(m => m.UserId == id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Users");
             }
-
-            return View(user);
         }
 
         // GET: Users/Create
         public IActionResult Create()
         {
-            return View();
+            byte[] buffer = new byte[200];
+            if (!HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                ViewData["Layout"] = GetLayout();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("Index", "Flights");
+            }
         }
 
         // POST: Users/Create
@@ -82,38 +118,54 @@ namespace FlightManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("UserId,Username,Password,Email,FirstName,LastName,EGN,Address,PhoneNumber,Role")] User user)
         {
-            if (ModelState.IsValid)
+            byte[] buffer = new byte[200];
+            if (!HttpContext.Session.TryGetValue("username", out buffer))
             {
-                user.Password = Security.ComputeSha256Hash(user.Password);
-                if (!_context.UsersSet.Any())
+                ViewData["Layout"] = GetLayout();
+                if (ModelState.IsValid)
                 {
-                    user.Role = 1;
+                    user.Password = Security.ComputeSha256Hash(user.Password);
+                    if (!_context.UsersSet.Any())
+                    {
+                        user.Role = 1;
+                    }
+                    else
+                    {
+                        user.Role = 0;
+                    }
+                    _context.Add(user);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
-                else
-                {
-                    user.Role = 0;
-                }
-                _context.Add(user);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
-            return View(user);
+            else
+            {
+                return RedirectToAction("Index", "Flights");
+            }
         }
 
         // GET: Users/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                ViewData["Layout"] = GetLayout();
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var user = await _context.UsersSet.FindAsync(id);
-            if (user == null)
-            {
-                return NotFound();
+                var user = await _context.UsersSet.FindAsync(id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+                return View(user);
             }
-            return View(user);
+            else{
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // POST: Users/Edit/5
@@ -123,50 +175,66 @@ namespace FlightManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("UserId,Username,Password,Email,FirstName,LastName,EGN,Address,PhoneNumber,Role")] User user)
         {
-            if (id != user.UserId)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                ViewData["Layout"] = GetLayout();
+                if (id != user.UserId)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(user);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!UserExists(user.UserId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(user);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!UserExists(user.UserId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(user);
             }
-            return View(user);
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // GET: Users/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                ViewData["Layout"] = GetLayout();
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var user = await _context.UsersSet
-                .FirstOrDefaultAsync(m => m.UserId == id);
-            if (user == null)
+                var user = await _context.UsersSet
+                    .FirstOrDefaultAsync(m => m.UserId == id);
+                if (user == null)
+                {
+                    return NotFound();
+                }
+
+                return View(user);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Users");
             }
-
-            return View(user);
         }
 
         // POST: Users/Delete/5
@@ -174,15 +242,48 @@ namespace FlightManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var user = await _context.UsersSet.FindAsync(id);
-            _context.UsersSet.Remove(user);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            if (HttpContext.Session.GetString("role") == "1")
+            {
+                ViewData["Layout"] = GetLayout();
+                var user = await _context.UsersSet.FindAsync(id);
+                _context.UsersSet.Remove(user);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
+
         }
 
         private bool UserExists(int id)
         {
             return _context.UsersSet.Any(e => e.UserId == id);
+        }
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index","Flights");
+        }
+        public string GetLayout()
+        {
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                if (HttpContext.Session.GetString("role") == "1")
+                {
+                    return "_LayoutAdmin";
+                }
+                else
+                {
+                    return "_LayoutUser";
+                }
+            }
+            else
+            {
+                return "_Layout";
+            }
         }
     }
 }

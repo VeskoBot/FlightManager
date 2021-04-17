@@ -19,13 +19,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Flights" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Flights" asp-action="Index">Flights</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Login">Login</a>
-                        </li>  
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Reservations" asp-action="Index">Reservations</a>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="Create">Registration</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="LogOut">Logout</a>
                         </li>
                     </ul>
                 </div>
@@ -37,6 +37,9 @@
             @RenderBody()
         </main>
     </div>
+
+    <footer class="border-top footer text-muted">
+    </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

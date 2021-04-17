@@ -3,12 +3,7 @@
 @{
     ViewData["Title"] = "Index";
 }
-
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h1>Flights</h1>
 <table class="table">
     <thead>
         <tr>
@@ -22,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.DepartureTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ArrivalTime)
+                Flight Duration
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AirplaneType)
@@ -52,7 +47,7 @@
                 @Html.DisplayFor(modelItem => item.DepartureTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArrivalTime)
+                @(item.ArrivalTime-item.DepartureTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AirplaneType)
@@ -67,7 +62,7 @@
                 @Html.DisplayFor(modelItem => item.VacantSpotsBussiness)
             </td>
             <td>
-                <a asp-action="Details" asp-route-id="@item.FlightId">More</a> |
+                <a asp-action="Details" asp-route-id="@item.FlightId">More</a>
             </td>
         </tr>
 }

@@ -24,33 +24,114 @@ namespace FlightManager.Controllers
         // GET: Reservations
         public async Task<IActionResult> Index()
         {
-            return View(await _context.ReservationsSet.ToListAsync());
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                if (!(HttpContext.Session.GetString("role") == "1"))
+                {
+                    ViewData["Layout"] = GetLayout();
+                    return View(await _context.ReservationsSet.ToListAsync());
+                }
+                else
+                {
+                    return RedirectToAction("IndexAdmin", "Reservations");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
+        }
+        public async Task<IActionResult> IndexAdmin()
+        {
+            if (HttpContext.Session.GetString("role") == "1")
+            {
+                ViewData["Layout"] = GetLayout();
+                return View(await _context.ReservationsSet.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("Index", "Reservations");
+            }
         }
 
         // GET: Reservations/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            ViewData["Layout"] = GetLayout();
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("username", out buffer))
             {
-                return NotFound();
-            }
+                if (!(HttpContext.Session.GetString("role") == "1"))
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
 
-            var reservations = await _context.ReservationsSet
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
-            if (reservations == null)
+                    var reservations = await _context.ReservationsSet
+                        .FirstOrDefaultAsync(m => m.ReservationId == id);
+                    if (reservations == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(reservations);
+                }
+                else
+                {
+                    return RedirectToAction("DetailsAdmin", "Reservations");
+                }
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Users");
             }
+        }
+        public async Task<IActionResult> DetailsAdmin(int? id)
+        {
+            ViewData["Layout"] = GetLayout();
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                if (HttpContext.Session.GetString("role") == "1")
+                {
+                    if (id == null)
+                    {
+                        return NotFound();
+                    }
 
-            return View(reservations);
+                    var reservations = await _context.ReservationsSet
+                        .FirstOrDefaultAsync(m => m.ReservationId == id);
+                    if (reservations == null)
+                    {
+                        return NotFound();
+                    }
+
+                    return View(reservations);
+                }
+                else
+                {
+                    return RedirectToAction("Details", "Reservations");
+                }
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // GET: Reservations/Create
         public IActionResult Create(int flightId)
         {
-            flightId = int.Parse(HttpContext.Session.GetString("FlightId"));
-            ViewData["id"] = flightId;
-            return View();
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("FlightId", out buffer))
+            {
+                ViewData["Layout"] = GetLayout();
+                return View();
+            }
+            else
+                return RedirectToAction("Index", "Flights");
         }
 
         // POST: Reservations/Create
@@ -58,38 +139,68 @@ namespace FlightManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ReservationId,FirstName,Surename,LastName,EGN,PhoneNumber,Nationality,TicketType")] Reservations reservations)
+        public async Task<IActionResult> Create([Bind("ReservationId,FirstName,Surename,LastName,EGN,PhoneNumber,Nationality,Email,TicketType")] Reservations reservations)
         {
-            if (ModelState.IsValid)
+            ViewData["Layout"] = GetLayout();
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("FlightId",out buffer))
             {
-             //   byte[] buffer = new byte[200];
-              /// HttpContext.Session.TryGetValue("flightId", out buffer);
-              /// if (BitConverter.IsLittleEndian)
-             ///       Array.Reverse(buffer);
+                if (ModelState.IsValid)
+                {
 
-              ///  int flightId = BitConverter.ToInt32(buffer, 0);
-              ///  reservations.FlightId = flightId;
-                _context.Add(reservations);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                    reservations.FlightId = int.Parse(HttpContext.Session.GetString("FlightId"));
+                    _context.Add(reservations);
+                    var flight = await _context.FlightsSet.FirstOrDefaultAsync(m => m.FlightId == reservations.FlightId);
+                    if (reservations.TicketType == 1)
+                    {
+                        flight.VacantSpotsBussiness--;
+                    }
+                    else if (reservations.TicketType == 0)
+                    {
+                        flight.VacantSpots--;
+                    }
+                    if (flight.VacantSpots < 0)
+                    {
+                        ViewData["result"] = "Not enough space in economy!";
+                        return View();
+                    }
+                    if (flight.VacantSpotsBussiness < 0)
+                    {
+                        ViewData["result"] = "Not enough space in bussiness!";
+                        return View();
+                    }
+                    _context.Update(flight);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                return View(reservations);
             }
-            return View(reservations);
+            else
+                return RedirectToAction("Index","Flights");
         }
 
         // GET: Reservations/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            ViewData["Layout"] = GetLayout();
+            if (HttpContext.Session.GetString("role")=="1")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var reservations = await _context.ReservationsSet.FindAsync(id);
-            if (reservations == null)
-            {
-                return NotFound();
+                var reservations = await _context.ReservationsSet.FindAsync(id);
+                if (reservations == null)
+                {
+                    return NotFound();
+                }
+                return View(reservations);
             }
-            return View(reservations);
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // POST: Reservations/Edit/5
@@ -97,52 +208,68 @@ namespace FlightManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,FirstName,Surename,LastName,EGN,PhoneNumber,Nationality,TicketType")] Reservations reservations)
+        public async Task<IActionResult> Edit(int id, [Bind("ReservationId,FirstName,Surename,LastName,EGN,PhoneNumber,Nationality,Email,TicketType")] Reservations reservations)
         {
-            if (id != reservations.ReservationId)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                ViewData["Layout"] = GetLayout();
+                if (id != reservations.ReservationId)
+                {
+                    return NotFound();
+                }
 
-            if (ModelState.IsValid)
-            {
-                try
+                if (ModelState.IsValid)
                 {
-                    _context.Update(reservations);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ReservationsExists(reservations.ReservationId))
+                    try
                     {
-                        return NotFound();
+                        _context.Update(reservations);
+                        await _context.SaveChangesAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
-                        throw;
+                        if (!ReservationsExists(reservations.ReservationId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
                     }
+                    return RedirectToAction(nameof(Index));
                 }
-                return RedirectToAction(nameof(Index));
+                return View(reservations);
             }
-            return View(reservations);
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         // GET: Reservations/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            ViewData["Layout"] = GetLayout();
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                return NotFound();
-            }
+                if (id == null)
+                {
+                    return NotFound();
+                }
 
-            var reservations = await _context.ReservationsSet
-                .FirstOrDefaultAsync(m => m.ReservationId == id);
-            if (reservations == null)
+                var reservations = await _context.ReservationsSet
+                    .FirstOrDefaultAsync(m => m.ReservationId == id);
+                if (reservations == null)
+                {
+                    return NotFound();
+                }
+
+                return View(reservations);
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("Login", "Users");
             }
-
-            return View(reservations);
         }
 
         // POST: Reservations/Delete/5
@@ -150,15 +277,42 @@ namespace FlightManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var reservations = await _context.ReservationsSet.FindAsync(id);
-            _context.ReservationsSet.Remove(reservations);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            ViewData["Layout"] = GetLayout();
+            if (HttpContext.Session.GetString("role") == "1")
+            {
+                var reservations = await _context.ReservationsSet.FindAsync(id);
+                _context.ReservationsSet.Remove(reservations);
+                await _context.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
 
         private bool ReservationsExists(int id)
         {
             return _context.ReservationsSet.Any(e => e.ReservationId == id);
+        }
+        public string GetLayout()
+        {
+            byte[] buffer = new byte[200];
+            if (HttpContext.Session.TryGetValue("username", out buffer))
+            {
+                if (HttpContext.Session.GetString("role") == "1")
+                {
+                    return "_LayoutAdmin";
+                }
+                else
+                {
+                    return "_LayoutUser";
+                }
+            }
+            else
+            {
+                return "_Layout";
+            }
         }
     }
 }

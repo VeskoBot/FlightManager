@@ -4,10 +4,10 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Flights</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Create new flight</a>
 </p>
 <table class="table">
     <thead>
@@ -22,7 +22,7 @@
                 @Html.DisplayNameFor(model => model.DepartureTime)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ArrivalTime)
+                Flight Time
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.AirplaneType)
@@ -52,7 +52,7 @@
                 @Html.DisplayFor(modelItem => item.DepartureTime)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArrivalTime)
+                @(item.ArrivalTime-item.DepartureTime)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AirplaneType)
@@ -68,7 +68,7 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.FlightId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.FlightId">Details</a> |
+                <a asp-action="DetailsAdmin" asp-route-id="@item.FlightId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.FlightId">Delete</a>
             </td>
         </tr>

@@ -318,7 +318,6 @@ C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\n
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\FlightManager.TagHelpers.input.cache
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\FlightManager.TagHelpers.output.cache
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\FlightManager.RazorCoreGenerate.cache
-C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Home\Index.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\Error.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\_Layout.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\_ValidationScriptsPartial.cshtml.g.cs
@@ -350,3 +349,7 @@ C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\n
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Flights\Index.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Flights\IndexAdmin.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Flights\DetailsAdmin.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\_LayoutAdmin.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Shared\_LayoutUser.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\DetailsAdmin.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\IndexAdmin.cshtml.g.cs

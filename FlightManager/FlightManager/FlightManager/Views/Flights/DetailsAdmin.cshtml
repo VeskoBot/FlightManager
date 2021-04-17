@@ -29,10 +29,10 @@
             @Html.DisplayFor(model => model.DepartureTime)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ArrivalTime)
+            Flight Time
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ArrivalTime)
+        <dd class="col-sm-10">
+            @ViewData["Length"]
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.AirplaneType)
@@ -62,5 +62,6 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.FlightId">Edit</a> |
+    <a asp-controller="Reservations" asp-action="Create" asp-route-id="@Model.FlightId">Make reservation</a> |
     <a asp-action="Index">Back to List</a>
 </div>

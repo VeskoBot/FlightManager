@@ -38,6 +38,11 @@ namespace FlightManager.Models
         [Display(Name = "Nationality")]
         public string Nationality { get; set; }
         [Required]
+        [Column(TypeName = "nvarchar(50)")]
+        [Display(Name = "E-mail")]
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
         [Display(Name = "Ticket Type")]
         public int TicketType { get; set; }
         public Flights Flight { get; set; }
