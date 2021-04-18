@@ -137,6 +137,16 @@ namespace FlightManager.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    if (flights.DepartureTime > flights.ArrivalTime)
+                    {
+                        ViewData["Result"] = "Arrival cannot be before departure";
+                        return View();
+                    }
+                    if (flights.DepartureTime < DateTime.Now || flights.ArrivalTime < DateTime.Now)
+                    {
+                        ViewData["Result"] = "Cannot choose past dates";
+                        return View();
+                    }
                     if (HttpContext.Session.GetString("role") != "1")
                     {
                         return RedirectToAction("Index", "Flights");
@@ -204,6 +214,16 @@ namespace FlightManager.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    if (flights.DepartureTime > flights.ArrivalTime)
+                    {
+                        ViewData["Result"] = "Arrival cannot be before departure";
+                        return View();
+                    }
+                    if (flights.DepartureTime < DateTime.Now || flights.ArrivalTime < DateTime.Now)
+                    {
+                        ViewData["Result"] = "Cannot choose past dates";
+                        return View();
+                    }
                     try
                     {
                         _context.Update(flights);
@@ -292,19 +312,35 @@ namespace FlightManager.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
-        public async Task<IActionResult> FlightReservations(int? id)
+        public async Task<IActionResult> FlightReservations(int? id,string order)
         {
-            ViewData["Layout"] = GetLayout();
-            var currentReservations = await _context.ReservationsSet.ToListAsync();
-            List <Reservations> flightReservations= new List<Reservations>();
-            for (int i = 0; i< currentReservations.Count(); i++)
+            if (HttpContext.Session.GetString("role") == "1")
             {
-                if (currentReservations[i].FlightId == id)
+                ViewData["Layout"] = GetLayout();
+                var currentReservations = await _context.ReservationsSet.ToListAsync();
+                List<Reservations> flightReservations = new List<Reservations>();
+                for (int i = 0; i < currentReservations.Count(); i++)
                 {
-                    flightReservations.Add(currentReservations[i]);
+                    if (currentReservations[i].FlightId == id)
+                    {
+                        flightReservations.Add(currentReservations[i]);
+                    }
                 }
+                ViewData["EmailOrder"] = String.IsNullOrEmpty(order) ? "email_desc" : "";
+                if (order == "email_desc")
+                {
+                    flightReservations = flightReservations.OrderByDescending(m => m.Email).ToList();
+                }
+                else
+                {
+                    flightReservations = flightReservations.OrderBy(m => m.Email).ToList();
+                }
+                return View(flightReservations);
             }
-            return View(flightReservations);
+            else
+            {
+                return RedirectToAction("Login", "Users");
+            }
         }
         public string GetLayout()
         {

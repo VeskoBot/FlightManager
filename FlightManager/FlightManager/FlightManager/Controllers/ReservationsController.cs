@@ -22,7 +22,7 @@ namespace FlightManager.Controllers
         }
 
         // GET: Reservations
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string order)
         {
             byte[] buffer = new byte[200];
             if (HttpContext.Session.TryGetValue("username", out buffer))
@@ -30,7 +30,17 @@ namespace FlightManager.Controllers
                 if (!(HttpContext.Session.GetString("role") == "1"))
                 {
                     ViewData["Layout"] = GetLayout();
-                    return View(await _context.ReservationsSet.ToListAsync());
+                    var reservations = await _context.ReservationsSet.ToListAsync();
+                    ViewData["EmailOrder"] = String.IsNullOrEmpty(order) ? "email_desc" : "";
+                    if (order == "email_desc")
+                    {
+                        reservations = reservations.OrderByDescending(m => m.Email).ToList();
+                    }
+                    else
+                    {
+                        reservations = reservations.OrderBy(m => m.Email).ToList();
+                    }
+                    return View(reservations);
                 }
                 else
                 {
@@ -42,12 +52,22 @@ namespace FlightManager.Controllers
                 return RedirectToAction("Login", "Users");
             }
         }
-        public async Task<IActionResult> IndexAdmin()
+        public async Task<IActionResult> IndexAdmin(string order)
         {
             if (HttpContext.Session.GetString("role") == "1")
             {
                 ViewData["Layout"] = GetLayout();
-                return View(await _context.ReservationsSet.ToListAsync());
+                var reservations = await _context.ReservationsSet.ToListAsync();
+                ViewData["EmailOrder"] = String.IsNullOrEmpty(order) ? "email_desc" : "";
+                if (order == "email_desc")
+                {
+                    reservations = reservations.OrderByDescending(m => m.Email).ToList();
+                }
+                else
+                {
+                    reservations = reservations.OrderBy(m => m.Email).ToList();
+                }
+                return View(reservations);
             }
             else
             {

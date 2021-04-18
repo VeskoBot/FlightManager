@@ -27,8 +27,8 @@
                 @Html.DisplayNameFor(model => model.Nationality)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
+                <a asp-action="FlightReservations" asp-route-order="@ViewData["EmailOrder"]">@Html.DisplayNameFor(model => model.Email)</a>
+</th>
             <th>
                 @Html.DisplayNameFor(model => model.TicketType)
             </th>

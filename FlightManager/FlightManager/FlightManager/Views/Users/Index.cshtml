@@ -12,11 +12,11 @@
                 @Html.DisplayNameFor(model => model.Username)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
-            </th>
+                <a asp-action="Index" asp-route-order="@ViewData["EmailOrder"]">@Html.DisplayNameFor(model => model.Email)</a>
+</th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstName)
-            </th>
+</th>
             <th>
                 @Html.DisplayNameFor(model => model.LastName)
             </th>

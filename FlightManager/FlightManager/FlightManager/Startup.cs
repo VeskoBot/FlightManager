@@ -10,6 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightManager.Data;
 using Microsoft.EntityFrameworkCore;
+using MimeKit;
+using MailKit.Net.Smtp;
+using FlightManager.Utilities;
 
 namespace FlightManager
 {

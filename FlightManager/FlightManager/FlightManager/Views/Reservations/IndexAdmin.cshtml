@@ -31,7 +31,7 @@
                 @Html.DisplayNameFor(model => model.Nationality)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Email)
+                <a asp-action="IndexAdmin" asp-route-order="@ViewData["EmailOrder"]">@Html.DisplayNameFor(model => model.Email)</a>
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.TicketType)
@@ -78,9 +78,7 @@
 
                <a asp-action="Edit" asp-route-id="@item.ReservationId">Edit</a> |
 
-               <a asp-action="DetailsAdmin" asp-route-id="@item.ReservationId">Details</a> |
-
-               <a asp-action="Delete" asp-route-id="@item.ReservationId">Delete</a>
+               <a asp-action="DetailsAdmin" asp-route-id="@item.ReservationId">Details</a>
 
            </td>
 

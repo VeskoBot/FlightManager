@@ -354,3 +354,6 @@ C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\n
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\DetailsAdmin.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Reservations\IndexAdmin.cshtml.g.cs
 C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\obj\Debug\net5.0\Razor\Views\Flights\FlightReservations.cshtml.g.cs
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\bin\Debug\net5.0\MailKit.dll
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\bin\Debug\net5.0\MimeKit.dll
+C:\Users\E_V\FlightManager\FlightManager\FlightManager\FlightManager\bin\Debug\net5.0\BouncyCastle.Crypto.dll

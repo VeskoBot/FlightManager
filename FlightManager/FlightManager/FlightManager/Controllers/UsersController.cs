@@ -57,12 +57,22 @@ namespace FlightManager.Controllers
             return RedirectToAction("Index","Flights");
         }
         // GET: Users
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string order)
         {
             if (HttpContext.Session.GetString("role")=="1")
             {
                 ViewData["Layout"] = GetLayout();
-                return View(await _context.UsersSet.ToListAsync());
+                var users = await _context.UsersSet.ToListAsync();
+                ViewData["EmailOrder"] = String.IsNullOrEmpty(order) ? "email_desc" : "";
+                if (order == "email_desc")
+                {
+                    users = users.OrderByDescending(m => m.Email).ToList();
+                }
+                else
+                {
+                    users = users.OrderBy(m => m.Email).ToList();
+                }
+                return View(users);
             }
             else
             {
@@ -123,7 +133,7 @@ namespace FlightManager.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("UserId,Username,Password,Email,FirstName,LastName,EGN,Address,PhoneNumber,Role")] User user)
+        public async Task<IActionResult> Create([Bind("UserId,Username,Password,ConfirmPassword,Email,FirstName,LastName,EGN,Address,PhoneNumber,Role")] User user)
         {
             byte[] buffer = new byte[200];
             if (!HttpContext.Session.TryGetValue("username", out buffer))
@@ -131,6 +141,15 @@ namespace FlightManager.Controllers
                 ViewData["Layout"] = GetLayout();
                 if (ModelState.IsValid)
                 {
+                    var users = await _context.UsersSet.ToListAsync();
+                    foreach(var el in users)
+                    {
+                        if (el.Username == user.Username)
+                            ViewData["Result"] = "The username is taken";
+                        else if (el.Email == user.Email)
+                            ViewData["Result"] = "The email is taken";
+                        return View();
+                    }
                     user.Password = Security.ComputeSha256Hash(user.Password);
                     if (!_context.UsersSet.Any())
                     {
@@ -162,7 +181,6 @@ namespace FlightManager.Controllers
                 {
                     return NotFound();
                 }
-
                 var user = await _context.UsersSet.FindAsync(id);
                 if (user == null)
                 {
@@ -192,6 +210,15 @@ namespace FlightManager.Controllers
 
                 if (ModelState.IsValid)
                 {
+                    var users = await _context.UsersSet.ToListAsync();
+                    foreach (var el in users)
+                    {
+                        if (el.Username == user.Username)
+                            ViewData["Result"] = "The username is taken";
+                        else if (el.Email == user.Email)
+                            ViewData["Result"] = "The email is taken";
+                        return View();
+                    }
                     try
                     {
                         _context.Update(user);
