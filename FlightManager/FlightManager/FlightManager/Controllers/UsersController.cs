@@ -145,10 +145,15 @@ namespace FlightManager.Controllers
                     foreach(var el in users)
                     {
                         if (el.Username == user.Username)
+                        {
                             ViewData["Result"] = "The username is taken";
+                            return View();
+                        }                          
                         else if (el.Email == user.Email)
+                        {
                             ViewData["Result"] = "The email is taken";
-                        return View();
+                            return View();
+                        }
                     }
                     user.Password = Security.ComputeSha256Hash(user.Password);
                     if (!_context.UsersSet.Any())
